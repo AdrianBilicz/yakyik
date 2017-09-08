@@ -16,6 +16,7 @@ module.exports = {
 				callback(err,null)
 				return
 			}
+			callback(null,zone)
 		})
 	},
 	create: function(params,callback){
