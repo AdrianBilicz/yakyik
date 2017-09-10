@@ -1,46 +1,44 @@
 import React, {Component} from 'react'
-import Comment from '../presentation/Comment'
+import {Comment, CreateComment} from '../presentation'
 import styles from './styles'
-import superagent from 'superagent'
+import {APIManager} from '../../utils'
 class Comments extends Component {
 	constructor(){
 		super()
 		this.state = {
-			comment: {
-				username: '',
-				body: '',
-				timestamp: ''
-			},
+			// comment: {
+			// 	username: '',
+			// 	body: ''
+			// },
 			list: []
 		}
 	}
 	componentDidMount(){
-
-		superagent
-		.get('/api/comments')
-		.query(null)
-		.set('Accept', 'aplication/json')
-		.end((err,res) => {
+		APIManager.get('/api/comment',null,(err,response) =>{
 			if(err){
 				console.log('err')
 				return
 			}
-
-			console.log(res.body)
-			let results = res.body.results
 			this.setState({
-				list: results
+				list: response.results
+			})
 		})
 
-		})
 	}
-	submitComment(){
-		console.log('Submit '+ JSON.stringify(this.state.comment))
-		let updatedList = Object.assign([], this.state.list)
-		updatedList.push(this.state.comment)
-		this.setState({
-			list: updatedList
-		})
+	submitComment(comment){
+
+		console.log('submitComment: ' + JSON.stringify(comment))
+		// APIManager.post('/api/comment', updatedComment, (err,response) => {
+		// 	if(err){
+		// 		console.log('err :'+ err.message)
+		// 		return
+		// 	}
+		// 	let updatedList = Object.assign([], this.state.list)
+		// 	updatedList.push(response.results)
+		// 	this.setState({
+		// 		list: updatedList
+		// 	})
+		// })
 	}
 	updateUsername(e){
 
@@ -52,18 +50,12 @@ class Comments extends Component {
 	}
 	upadteBody(e){
 		let updatedComment = Object.assign({},this.state.comment)
-			updatedComment['body'] = e.target.value
+		updatedComment['body'] = e.target.value
 		this.setState({
 			comment: updatedComment
 		})
 	}
-	updateTimestamp(e){
-		let updatedComment = Object.assign({},this.state.comment)
-			updatedComment['timestamp'] = e.target.value
-		this.setState({
-			comment: updatedComment
-		})
-	}
+
 	render(){
 		const commentList = this.state.list.map((comment,i) => {
 			return (
@@ -74,12 +66,10 @@ class Comments extends Component {
 			<div style={styles.comment.commentsBox}>
 			<h2>Zone 2</h2>
 			<ul style={styles.comment.commentsList}>
-				{commentList}
+			{commentList}
 			</ul>
-			<input onChange={this.updateUsername.bind(this)} className="form-control" type="text" placeholder="username"/><br/>
-			<input onChange={this.upadteBody.bind(this)} className="form-control" type="text" placeholder="Comment.."/><br/>
-			<input onChange={this.updateTimestamp.bind(this)} className="form-control" type="text" placeholder="timeStamp"/>
-			<button onClick={this.submitComment.bind(this)} className="btn btn-info">Submit Comment</button>
+
+			<CreateComment onCreate={this.submitComment.bind(this)}/>
 			</div>
 			)
 	}

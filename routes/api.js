@@ -22,7 +22,7 @@ router.get('/:resource', function(req,res,next){
 			return
 		}
 		res.json({
-			consfirmation: 'success',
+			confirmation: 'success',
 			results: results
 		})
 	})

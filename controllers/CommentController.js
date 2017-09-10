@@ -20,7 +20,7 @@ module.exports = {
 		})
 	},
 	create: function(params,callback){
-
+		console.log(params)
 		Comment.create(params,function(err,comment){
 			if(err){
 				callback(err,null)

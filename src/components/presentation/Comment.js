@@ -7,7 +7,7 @@ class Comment extends Component {
 				<p style={{fontSize: 20}}>{this.props.currentComment.body}</p>
 				<span style={{fontWeight: 100}}>{this.props.currentComment.username}</span>
 				<span style={{marginLeft: 12, marginRight: 12}} >|</span>
-				<span>{this.props.currentComment.timestamp}</span>
+				<span>{this.props.currentComment.timeStamp}</span>
 				<hr/>
 			</div>
 			)
